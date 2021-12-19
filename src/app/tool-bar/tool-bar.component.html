@@ -1,0 +1,24 @@
+<mat-toolbar *ngIf="isLoggedIn" class="my-toolbar">
+    <!-- <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+        <mat-icon>menu</mat-icon>
+    </button> -->
+    <a routerLink="/" class="app-title">
+        <span>My App</span>
+    </a>
+    <span class="w-full"></span>
+    <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+        <mat-icon>account_circle</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <div *ngIf="user?.displayName" mat-menu-item>
+            {{ user?.displayName }}
+        </div>
+        <div mat-menu-item class="inline-block align-middle ">
+            <mat-icon>email</mat-icon> {{ user?.email }} 
+            <mat-icon [ngClass]="user?.emailVerified ? '!text-green-400' : '!text-red-400'" class="!text-xs">circle</mat-icon>
+        </div>
+        <div mat-menu-item routerLink="/logout">
+            <mat-icon>logout</mat-icon> Signout
+        </div>
+      </mat-menu>
+</mat-toolbar>
