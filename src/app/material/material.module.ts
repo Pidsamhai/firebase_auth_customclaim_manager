@@ -8,7 +8,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDialogModule } from '@angular/material/dialog';
-
+import { MatTableModule } from '@angular/material/table';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [],
@@ -21,7 +22,9 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatGridListModule,
     MatProgressBarModule,
     MatMenuModule,
-    MatDialogModule
+    MatDialogModule,
+    MatTableModule,
+    MatProgressSpinnerModule
   ],
   providers: []
 })

@@ -13,7 +13,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IndexComponent } from './index/index.component';
 import { LogoutComponent } from './logout/logout.component';
 import { FirebaseModule } from './firebase/firebase.module';
-import { SignoutComponent } from './dialog/signout/signout.component';
+import { ProjectComponent } from './widget/project/project.component';
+import { TokenComponent } from './token/token.component';
+import { CreateTemplateComponent } from './dialog/create-template/create-template.component';
+import { DeleteTemplateComponent } from './dialog/delete-template/delete-template.component';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 
 @NgModule({
   declarations: [
@@ -24,7 +28,10 @@ import { SignoutComponent } from './dialog/signout/signout.component';
     CardComponent,
     IndexComponent,
     LogoutComponent,
-    SignoutComponent,
+    ProjectComponent,
+    TokenComponent,
+    CreateTemplateComponent,
+    DeleteTemplateComponent,
   ],
   imports: [
     BrowserModule,
@@ -33,7 +40,8 @@ import { SignoutComponent } from './dialog/signout/signout.component';
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    FirebaseModule
+    FirebaseModule,
+    ClipboardModule
   ],
   providers: [
   ],

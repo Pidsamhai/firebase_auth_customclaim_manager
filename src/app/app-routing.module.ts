@@ -4,6 +4,7 @@ import { IndexComponent } from './index/index.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard, redirectUnauthorizedTo, redirectLoggedInTo } from '@angular/fire/auth-guard';
 import { LogoutComponent } from './logout/logout.component';
+import { TokenComponent } from './token/token.component';
 
 const redirectLoggedInToIndex = () => redirectLoggedInTo([""]);
 const redirectUnauthorizedToLogin = () => redirectUnauthorizedTo(['login']);
@@ -24,7 +25,13 @@ const routes: Routes = [
   {
     path: "logout",
     component: LogoutComponent
-  }
+  },
+  {
+    path: "token",
+    component: TokenComponent,
+    canActivate: [AuthGuard],
+    data: { authGuardPipe: redirectUnauthorizedToLogin }
+  },
 ];
 
 @NgModule({

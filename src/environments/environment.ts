@@ -14,7 +14,8 @@ export const environment = {
     measurementId: "G-YRJSK81ZTR"
   },
   production: false,
-  useEmulators: true
+  useEmulators: true,
+  recaptcha3SiteKey: ""
 };
 
 /*

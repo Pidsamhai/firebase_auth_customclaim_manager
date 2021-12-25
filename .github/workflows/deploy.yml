@@ -1,0 +1,68 @@
+name: Deploy
+on:
+  push:
+    tags:
+      - '*'
+jobs:
+  deploy_firebase:
+    name: Deploy
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: firebase/functions
+    steps:
+      - uses: actions/checkout@master
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+      
+      - name: Install Dependencies
+        run: npm install
+      # - name: Create Build Info
+      #   run: |
+      #     date > src/resource/builddate
+      #     echo ${{ github.ref_name }} > src/resource/version
+
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: deploy
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+
+      - name: Deploy to Firebase
+        uses: w9jds/firebase-action@master
+        with:
+          args: functions:config:set env.secrets_key="$SECRETS_KEY"
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          SECRETS_KEY: ${{ secrets.SECRETS_KEY }}
+
+  deploy_web_app:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+        
+    - name: Install dependencies
+      run: npm install
+    
+    - name: Set Base Url
+      run: echo "const baseApiUrl = $BASE_API_URL;" > lib/utils/const.dart
+      env:
+        BASE_API_URL: "${{ secrets.BASE_API_URL }}"
+
+    - name: Build web
+      run: ng build --prod --base-href /$BASE_HREF
+
+    - name: Deploy to Github page
+      uses: s0/git-publish-subdir-action@develop
+      env:
+        REPO: self
+        BRANCH: gh-page
+        FOLDER: dist/web
+        GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+        MESSAGE: "🚀 deploy commit {sha} "

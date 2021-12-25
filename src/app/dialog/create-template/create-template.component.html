@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>Add New Project</h1>
+<div mat-dialog-content>
+  <strong>Choose services_account.son</strong>
+  <input type="file" accept=".json" hidden #fileInput (change)="fileInputChange($event)">
+  <li *ngFor="let item of project">
+    {{item.name}}
+  </li>
+  <div *ngIf="isProgress" class="flex flex-row items-center gap-2">
+    <mat-progress-spinner diameter="30" mode="indeterminate"></mat-progress-spinner> Saving...
+  </div>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="openFIleChooser()">
+    <mat-icon>folder_open</mat-icon> Add File
+  </button>
+  <button (click)="save()" *ngIf="project.length > 0" mat-button>
+    <mat-icon>save</mat-icon> Save
+  </button>
+</div>

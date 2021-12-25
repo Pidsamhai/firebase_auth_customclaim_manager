@@ -1,0 +1,15 @@
+<h1 mat-dialog-title>Confirmation</h1>
+<div mat-dialog-content>
+  <strong>you want to delete {{data.id}} template</strong>
+  <div *ngIf="isProgress" class="flex flex-row items-center gap-2">
+    <mat-progress-spinner diameter="30" mode="indeterminate"></mat-progress-spinner> Deleting...
+  </div>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close="">
+    Cancel
+  </button>
+  <button (click)="delete()" mat-button>
+    OK
+  </button>
+</div>

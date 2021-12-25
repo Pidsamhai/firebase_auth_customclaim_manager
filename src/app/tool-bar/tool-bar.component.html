@@ -13,9 +13,12 @@
         <div *ngIf="user?.displayName" mat-menu-item>
             {{ user?.displayName }}
         </div>
-        <div mat-menu-item class="inline-block align-middle ">
+        <div mat-menu-item class="inline-block !align-middle">
             <mat-icon>email</mat-icon> {{ user?.email }} 
             <mat-icon [ngClass]="user?.emailVerified ? '!text-green-400' : '!text-red-400'" class="!text-xs">circle</mat-icon>
+        </div>
+        <div mat-menu-item routerLink="/token">
+            <mat-icon>token</mat-icon> Token
         </div>
         <div mat-menu-item routerLink="/logout">
             <mat-icon>logout</mat-icon> Signout
