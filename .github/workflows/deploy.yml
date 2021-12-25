@@ -24,6 +24,15 @@ jobs:
       #     date > src/resource/builddate
       #     echo ${{ github.ref_name }} > src/resource/version
 
+      - name: Deploy Secrets key
+        uses: w9jds/firebase-action@master
+        with:
+          args: functions:config:set env.secrets_key="$SECRETS_KEY"
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+          SECRETS_KEY: ${{ secrets.SECRETS_KEY }}
+          PROJECT_PATH: ./firebase
+
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
@@ -32,15 +41,6 @@ jobs:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           PROJECT_PATH: ./firebase
           
-
-      - name: Deploy to Firebase
-        uses: w9jds/firebase-action@master
-        with:
-          args: functions:config:set env.secrets_key="$SECRETS_KEY"
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
-          SECRETS_KEY: ${{ secrets.SECRETS_KEY }}
-          PROJECT_PATH: ./firebase
 
   deploy_web_app:
     runs-on: ubuntu-latest
