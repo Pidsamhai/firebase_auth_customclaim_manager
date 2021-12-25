@@ -26,6 +26,7 @@ jobs:
 
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
+        working-directory: firebase/functions
         with:
           args: deploy
         env:
@@ -33,6 +34,7 @@ jobs:
 
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
+        working-directory: firebase/functions
         with:
           args: functions:config:set env.secrets_key="$SECRETS_KEY"
         env:
@@ -49,15 +51,12 @@ jobs:
         
     - name: Install dependencies
       run: npm install
-    
-    - name: Set Base Url
-      run: echo "const baseApiUrl = $BASE_API_URL;" > lib/utils/const.dart
-      env:
-        BASE_API_URL: "${{ secrets.BASE_API_URL }}"
 
     - name: Build web
       run: ng build --prod --base-href /$BASE_HREF
-
+      env:
+        BASE_HREF: ${{ github.event.repository.name }}
+        
     - name: Deploy to Github page
       uses: s0/git-publish-subdir-action@develop
       env:
