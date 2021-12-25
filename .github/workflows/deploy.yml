@@ -56,7 +56,7 @@ jobs:
       run: npm install
 
     - name: Build web
-      run: ng build --base-href /$BASE_HREF
+      run: ng build --base-href /$BASE_HREF/
       env:
         BASE_HREF: ${{ github.event.repository.name }}
         
