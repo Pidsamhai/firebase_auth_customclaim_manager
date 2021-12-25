@@ -27,7 +27,7 @@ jobs:
       - name: Deploy Secrets key
         uses: w9jds/firebase-action@master
         with:
-          args: functions:config:set env.secrets_key="$SECRETS_KEY"
+          args: functions:config:set env.secrets.key="$SECRETS_KEY"
         env:
           FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
           SECRETS_KEY: ${{ secrets.SECRETS_KEY }}
