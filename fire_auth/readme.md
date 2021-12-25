@@ -1,0 +1,1 @@
+### Firebase project for test manage auth

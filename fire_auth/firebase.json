@@ -1,0 +1,13 @@
+{
+  "emulators": {
+    "auth": {
+      "host": "127.0.0.1",
+      "port": 9089
+    },
+    "ui": {
+      "host": "127.0.0.1",
+      "port": 4001,
+      "enabled": true
+    }
+  }
+}
