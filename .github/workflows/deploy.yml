@@ -26,7 +26,7 @@ jobs:
 
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
-        working-directory: firebase/functions
+        # working-directory: firebase/functions
         with:
           args: deploy
         env:
@@ -34,7 +34,7 @@ jobs:
 
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
-        working-directory: firebase/functions
+        # working-directory: firebase/functions
         with:
           args: functions:config:set env.secrets_key="$SECRETS_KEY"
         env:
