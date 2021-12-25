@@ -1,5 +1,5 @@
-import * as admin from 'firebase-admin';
+import * as admin from "firebase-admin";
 
 const adminApp = admin.initializeApp();
 
-export { adminApp };
+export {adminApp};

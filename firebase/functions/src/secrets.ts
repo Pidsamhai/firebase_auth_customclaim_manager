@@ -1,6 +1,9 @@
-import * as dotenv from 'dotenv';
-import * as functions from 'firebase-functions';
+import * as dotenv from "dotenv";
+import * as functions from "firebase-functions";
 
 dotenv.config();
 
-export const SECRETS_KEY: string = process.env.secrets_key || functions.config().env.secrets_key;
+const LOCAL = process.env.secrets_key;
+const FUNCTIONS = functions.config().env.secrets_key;
+const SECRETS_KEY: string = LOCAL || FUNCTIONS;
+export {SECRETS_KEY};
