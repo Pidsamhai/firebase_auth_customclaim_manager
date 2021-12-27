@@ -5,11 +5,15 @@ import {SECRETS_KEY} from "./secrets";
 import * as admin from "firebase-admin";
 import {adminApp} from "./firebase";
 import {Template} from "./template";
+import {emulatorBlock} from "./utils";
+import {delayGuard} from "./delay_guard";
 
 const server = express();
 
 server.use(cors());
-
+if (process.env.DEV) {
+  server.use(delayGuard(2000));
+}
 server.use(firebaseAuthGuard);
 
 server.get("/", (_, res) => {
@@ -26,30 +30,57 @@ server.get("/users/:uid", async (req, res) => {
     const templateRef = adminApp.database().ref("template");
     const templateData = await templateRef.child(req.params.uid).get();
     const decryptTemplate = new Template(templateData.toJSON()).decrypt();
+    const pageToken = req.query?.["page_token"]?.toString();
+    let projectAdmin: admin.app.App;
+    let usersPage: admin.auth.ListUsersResult;
 
-    /**
-     * Delete main emulator host
-     * before do process
-     */
-    delete process.env.FIREBASE_AUTH_EMULATOR_HOST;
-    process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9089";
+    await emulatorBlock(async () => {
+      projectAdmin = admin.initializeApp({
+        projectId: decryptTemplate.credential.projectId,
+        credential: admin.credential.cert(decryptTemplate.credential),
+      }, decryptTemplate.credential.projectId);
+      usersPage = await projectAdmin.auth().listUsers(1, pageToken);
+      await projectAdmin.delete();
+    });
 
-    const projectAdmin = admin.initializeApp({
-      projectId: decryptTemplate.credential.projectId,
-      credential: admin.credential.cert(decryptTemplate.credential),
-    }, decryptTemplate.credential.projectId);
-    const users = await projectAdmin.auth().listUsers(10);
-    await projectAdmin.delete();
-
-    /**
-     * Roll back main emulator host
-     */
-    process.env.FIREBASE_AUTH_EMULATOR_HOST = "127.0.0.1:9099";
-
-    res.json(users);
+    const users: Array<User> = usersPage!.users.map((u) => <User>{
+      uid: u.uid,
+      email: u.email,
+      disable: u.disabled,
+      claims: u.customClaims,
+      emailVerified: u.emailVerified,
+    });
+    const data = {
+      data: users,
+      before: pageToken,
+      next: usersPage!.pageToken,
+    };
+    console.log(data);
+    res.json(data);
   } catch (error) {
     console.error(error);
     res.status(404).json(error);
+  }
+});
+
+server.get("/user/:template_id/claims/:uid", async (req, res) => {
+  try {
+    const templateRef = adminApp.database().ref("template");
+    const templateData = await templateRef.child(req.params.template_id).get();
+    const decryptTemplate = new Template(templateData.toJSON()).decrypt();
+    let projectAdmin: admin.app.App;
+    let userRec: admin.auth.UserRecord;
+    await emulatorBlock(async () => {
+      projectAdmin = admin.initializeApp({
+        projectId: decryptTemplate.credential.projectId,
+        credential: admin.credential.cert(decryptTemplate.credential),
+      }, decryptTemplate.credential.projectId);
+      userRec = await projectAdmin.auth().getUser(req.params.uid);
+      await projectAdmin.delete();
+    });
+    res.json(userRec!.customClaims);
+  } catch (error) {
+    res.status(404).json({message: "Error"});
   }
 });
 

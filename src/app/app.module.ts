@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UserItemComponent } from './user-item/user-item.component';
@@ -18,6 +17,15 @@ import { TokenComponent } from './token/token.component';
 import { CreateTemplateComponent } from './dialog/create-template/create-template.component';
 import { DeleteTemplateComponent } from './dialog/delete-template/delete-template.component';
 import { ClipboardModule } from '@angular/cdk/clipboard';
+import { LOGGER_OPTIONS, LogLevel, Options } from './services/logger/logger.service';
+import { environment } from 'src/environments/environment';
+import { UsersComponent } from './users/users.component';
+import { HttpClientModule } from '@angular/common/http';
+import { authInterceptorProviders } from './services/api';
+import { BASE_URL } from './services/api/api.service';
+import { CopyMessageDirective, CopyMessageComponent } from './utility/copy-message';
+import { CustomPaginatorComponent } from './widget/custom-paginator/custom-paginator.component';
+import { EditCustomClaimsComponent } from './dialog/edit-custom-claims/edit-custom-claims.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +40,11 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
     TokenComponent,
     CreateTemplateComponent,
     DeleteTemplateComponent,
+    UsersComponent,
+    CopyMessageDirective,
+    CopyMessageComponent,
+    CustomPaginatorComponent,
+    EditCustomClaimsComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,9 +54,19 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
     FormsModule,
     ReactiveFormsModule,
     FirebaseModule,
-    ClipboardModule
+    ClipboardModule,
+    HttpClientModule
   ],
   providers: [
+    {
+      provide: LOGGER_OPTIONS,
+      useValue: <Options>{ 
+        level: LogLevel.all, 
+        enable: !environment.production 
+      }
+    },
+    authInterceptorProviders,
+    { provide: BASE_URL, useValue: environment.baseApiEndpoint }
   ],
   bootstrap: [AppComponent]
 })

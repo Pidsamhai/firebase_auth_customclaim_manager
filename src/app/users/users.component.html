@@ -1,0 +1,58 @@
+<div class="container mx-auto flex flex-col justify-center items-center p-4">
+  <div class="mat-elevation-z8 w-full">
+    <table mat-table [dataSource]="userResponse?.data ?? []" class="w-full">
+
+      <ng-container matColumnDef="verified">
+        <th mat-header-cell *matHeaderCellDef class="w-1/12"> Verified </th>
+        <td mat-cell *matCellDef="let element" class="break-normal">
+          <mat-icon *ngIf="element.emailVerified" class="!text-green-500">verified_user</mat-icon>
+          <mat-icon *ngIf="!element.emailVerified" class="!text-red-500">gpp_bad</mat-icon>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="uid">
+        <th mat-header-cell *matHeaderCellDef> Uid </th>
+        <td mat-cell *matCellDef="let element" class="break-normal">
+          <span appCopyMessage matTooltip="Copy" [cdkCopyToClipboard]="element.uid" [ngClass]="element.disable ? 'text-neutral-400' : ''"
+            class="cursor-pointer">
+            {{element.uid}}
+        </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef> Email </th>
+        <td mat-cell *matCellDef="let element" class="break-normal">
+          <span appCopyMessage matTooltip="Copy" [cdkCopyToClipboard]="element.email" class="cursor-pointer">
+            {{element.email}}
+          </span>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef class="!text-center"> Actions </th>
+        <td mat-cell *matCellDef="let element" class="text-center">
+          <button mat-icon-button (click)="openEditCustomClaimsDialog(element.uid)" type="button" class="!text-pink-500">
+            <mat-icon>person</mat-icon>
+          </button>
+        </td>
+      </ng-container>
+
+      <ng-container *matNoDataRow>
+        <tr class="mat-row">
+          <td colspan="4" class="mat-cell text-center">
+            <button mat-icon-button (click)="refreshTable()" type="button">
+              <mat-icon>refresh</mat-icon>
+            </button> No data
+          </td>
+        </tr>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <app-custom-paginator (onNext)="nextPage()" (onBefore)="beforePage()"
+      [disableNext]="userResponse?.next == undefined" [isLoading]="isLoading" [disableBefore]="userResponse?.before == undefined">
+    </app-custom-paginator>
+  </div>
+</div>

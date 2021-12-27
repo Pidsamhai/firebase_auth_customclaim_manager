@@ -11,5 +11,6 @@ export const environment = {
   },
   production: true,
   useEmulators: false,
-  recaptcha3SiteKey: "6LefPr4dAAAAAF0d-FFP57NQTFXpXNIRuWP-mwds"
+  recaptcha3SiteKey: "6LefPr4dAAAAAF0d-FFP57NQTFXpXNIRuWP-mwds",
+  baseApiEndpoint: "https://asia-southeast2-auth-custom-claim-manager.cloudfunctions.net/api"
 };

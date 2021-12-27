@@ -15,7 +15,8 @@ export const environment = {
   },
   production: false,
   useEmulators: true,
-  recaptcha3SiteKey: ""
+  recaptcha3SiteKey: "",
+  baseApiEndpoint: "http://localhost:5001/auth-custom-claim-manager/asia-southeast2/api"
 };
 
 /*

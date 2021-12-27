@@ -1,0 +1,17 @@
+<h1 mat-dialog-title>Edit custom claims</h1>
+<mat-progress-bar *ngIf="isLoading" class="example-margin" mode="indeterminate"></mat-progress-bar>
+<div mat-dialog-content>
+    <mat-form-field class="w-full !m-0 !p-0" appearance="fill">
+        <textarea class="min-h-[25vh]" [formControl]="customClaimsFormControl" [errorStateMatcher]="matcher" matInput
+            placeholder='Enter valid json format ex. {"row": "admin"}'>
+            </textarea>
+        <mat-error *ngIf="customClaimsFormControl.hasError('jsonFormat')">
+            {{customClaimsFormControl.errors?.['jsonFormat']}}
+        </mat-error>
+    </mat-form-field>
+</div>
+<div mat-dialog-actions align="end">
+    <button mat-flat-button [disabled]="isLoading" (click)="formatJson()">Format</button>
+    <button mat-flat-button mat-dialog-close>Cancel</button>
+    <button mat-flat-button [disabled]="customClaimsFormControl.errors || isLoading">Save</button>
+</div>
