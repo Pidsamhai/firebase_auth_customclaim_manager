@@ -17,7 +17,7 @@
             <mat-icon>email</mat-icon> {{ user?.email }} 
             <mat-icon [ngClass]="user?.emailVerified ? '!text-green-400' : '!text-red-400'" class="!text-xs">circle</mat-icon>
         </div>
-        <div mat-menu-item routerLink="/token">
+        <div mat-menu-item *ngIf="isDevMode" routerLink="/token">
             <mat-icon>token</mat-icon> Token
         </div>
         <div mat-menu-item routerLink="/logout">

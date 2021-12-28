@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Auth, User, onAuthStateChanged, Unsubscribe } from '@angular/fire/auth';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-tool-bar',
@@ -9,6 +10,7 @@ import { Auth, User, onAuthStateChanged, Unsubscribe } from '@angular/fire/auth'
 })
 export class ToolBarComponent implements OnInit, OnDestroy {
   
+  isDevMode: boolean = !environment.production;
   user: User | null = null;
   get isLoggedIn() : boolean {
     return this.user != null;
