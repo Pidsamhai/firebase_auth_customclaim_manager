@@ -5,7 +5,7 @@ import { take } from 'rxjs';
 import { MyErrorStateMatcher } from 'src/app/login/login.component';
 import { ApiService } from 'src/app/services/api/api.service';
 import { LoggerService } from 'src/app/services/logger/logger.service';
-import { jsonPretty } from 'src/app/utility/';
+import { jsonPretty, MyValidator } from 'src/app/utility/';
 
 @Component({
   selector: 'app-edit-custom-claims',
@@ -51,20 +51,4 @@ export class EditCustomClaimsComponent implements OnInit {
 export interface Data {
   templateId: string,
   id: string
-}
-
-class MyValidator {
-  static jsonFormat(control: AbstractControl): ValidationErrors | null {
-    try {
-      if (control.value == "") {
-        return null;
-      }
-      JSON.parse(control.value);
-      return null;
-    } catch (error) {
-      return <ValidationErrors>{
-        jsonFormat: "Invalid JsonFormat"
-      }
-    }
-  }
 }
