@@ -1,31 +1,29 @@
-<form [formGroup]="control">
-  <div class="container">
-    <div>
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Email</mat-label>
-        <input type="email" matInput formControlName="email"
-          placeholder="Ex. pat@example.com" [errorStateMatcher]="matcher">
-          <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
-            Please enter a valid email address
-          </mat-error>
-          <mat-error *ngIf="emailFormControl.hasError('required')">
-            Email is <strong>required</strong>
-          </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="fill" class="full-width">
-        <mat-label>Password</mat-label>
-        <input matInput formControlName="password" placeholder="Placeholder" type="password" [errorStateMatcher]="matcher">
-        <mat-error *ngIf="passwordFormControl.hasError('required')">
-          Password is <strong>required</strong>
+<div class="container mx-auto h-screen flex justify-center items-center">
+  <form [formGroup]="control" class="w-full p-6 sm:p-0 sm:w-4/5 flex flex-col gap-1">
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Email</mat-label>
+      <input type="email" matInput formControlName="email"
+        placeholder="Ex. pat@example.com" [errorStateMatcher]="matcher">
+        <mat-error *ngIf="emailFormControl.hasError('email') && !emailFormControl.hasError('required')">
+          Please enter a valid email address
         </mat-error>
-        <mat-error *ngIf="passwordFormControl.hasError('minlength')">
-          Minimum <strong>{{ passwordFormControl.errors?.['minlength']['requiredLength'] }}</strong> digit 
+        <mat-error *ngIf="emailFormControl.hasError('required')">
+          Email is <strong>required</strong>
         </mat-error>
-      </mat-form-field>
-      <p class="text-red-500" *ngIf="errorMessage">{{ errorMessage }}</p>
-      <button mat-raised-button type="submit" (click)="login()" color="primary" class="full-width">Login</button>
-      <mat-progress-bar *ngIf="isProgress" class="mt-1" mode="indeterminate"></mat-progress-bar>
-    </div>
-  </div>
-</form>
+    </mat-form-field>
+  
+    <mat-form-field appearance="fill" class="w-full">
+      <mat-label>Password</mat-label>
+      <input matInput formControlName="password" placeholder="Placeholder" type="password" [errorStateMatcher]="matcher">
+      <mat-error *ngIf="passwordFormControl.hasError('required')">
+        Password is <strong>required</strong>
+      </mat-error>
+      <mat-error *ngIf="passwordFormControl.hasError('minlength')">
+        Minimum <strong>{{ passwordFormControl.errors?.['minlength']['requiredLength'] }}</strong> digit 
+      </mat-error>
+    </mat-form-field>
+    <p class="text-red-500" *ngIf="errorMessage">{{ errorMessage }}</p>
+    <button mat-raised-button type="submit" (click)="login()" color="primary" class="full-width">Login</button>
+    <mat-progress-bar *ngIf="isProgress" class="mt-1" mode="indeterminate"></mat-progress-bar>
+  </form>
+</div>
