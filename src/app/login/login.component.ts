@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 import { finalize, from } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { LoggerService } from '../services/logger/logger.service';
 
 @Component({
   selector: 'app-login',
@@ -55,7 +56,7 @@ export class LoginComponent implements OnInit {
       .subscribe({
         error: (error) => {
           if (error instanceof FirebaseError) {
-            this.errorMessage = error.message;
+            this.errorMessage = error.code.split('/')[1].replace('-', ' ');
           }
         },
         complete: () => this.router.navigate(['']),
