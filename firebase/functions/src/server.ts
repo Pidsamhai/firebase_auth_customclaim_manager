@@ -39,7 +39,7 @@ server.get("/users/:uid", async (req, res) => {
         projectId: decryptTemplate.credential.projectId,
         credential: admin.credential.cert(decryptTemplate.credential),
       }, decryptTemplate.credential.projectId);
-      usersPage = await projectAdmin.auth().listUsers(1, pageToken);
+      usersPage = await projectAdmin.auth().listUsers(100, pageToken);
       await projectAdmin.delete();
     });
 
@@ -52,7 +52,6 @@ server.get("/users/:uid", async (req, res) => {
     });
     const data = {
       data: users,
-      before: pageToken,
       next: usersPage!.pageToken,
     };
     console.log(data);
@@ -84,6 +83,30 @@ server.get("/user/:template_id/claims/:uid", async (req, res) => {
   }
 });
 
+
+server.put("/user/:template_id/claims/:uid", async (req, res) => {
+  try {
+    const templateRef = adminApp.database().ref("template");
+    const templateData = await templateRef.child(req.params.template_id).get();
+    const decryptTemplate = new Template(templateData.toJSON()).decrypt();
+    await emulatorBlock(async () => {
+      const projectAdmin = admin.initializeApp({
+        projectId: decryptTemplate.credential.projectId,
+        credential: admin.credential.cert(decryptTemplate.credential),
+      }, decryptTemplate.credential.projectId);
+      console.log(req.body);
+      await projectAdmin.auth()
+          .setCustomUserClaims(req.params.uid, JSON.parse(req.body));
+      await projectAdmin.delete();
+    });
+    res.status(200).json({message: "Update success"});
+  } catch (error) {
+    if (error instanceof SyntaxError) {
+      res.status(400).json({message: "Bad content format"});
+    }
+    res.status(400).json({message: "Error"});
+  }
+});
 
 server.use((_, res) => {
   res.status(404).json({message: "Not found"});

@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { UserResponse } from '../../model/'
+import { BasicHttpResponse, UserResponse } from '../../model/'
+import { LoggerService } from '../logger/logger.service';
 
 const BASE_URL = "AUTH_INTERCEP_BASE_URL";
 
@@ -13,13 +14,15 @@ class ApiService {
   constructor(
     @Inject(BASE_URL) private baseUrl: string,
     private http: HttpClient,
+    private logger: LoggerService
   ) { }
 
 
   getUsers(
     templateId: string,
-    pageToken?: string
+    pageToken?: string,
   ): Observable<UserResponse> {
+    const body = {};
     return this.http.get<UserResponse>(
       `${this.baseUrl}/users/${templateId}`,
       { 
@@ -36,6 +39,17 @@ class ApiService {
   ): Observable<string> {
     return this.http.get<string>(
       `${this.baseUrl}/user/${templateId}/claims/${uid}`
+    )
+  }
+
+  updateUserClaims(
+    templateId: string,
+    uid: string,
+    claims?: string
+  ): Observable<BasicHttpResponse> {
+    return this.http.put<BasicHttpResponse>(
+      `${this.baseUrl}/user/${templateId}/claims/${uid}`,
+      claims
     )
   }
 }

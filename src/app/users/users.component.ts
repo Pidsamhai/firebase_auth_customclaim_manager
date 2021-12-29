@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { take } from 'rxjs';
 import { ApiService } from '../services/api/api.service';
-import { UserResponse } from '../model'
+import { User, UserResponse } from '../model'
 import { MatDialog } from '@angular/material/dialog';
 import { EditCustomClaimsComponent, Data } from '../dialog/edit-custom-claims/edit-custom-claims.component';
+import { LoggerService } from '../services/logger/logger.service';
 
 @Component({
   selector: 'app-users',
@@ -15,12 +16,23 @@ export class UsersComponent implements OnInit {
   id: string = "";
   isLoading: boolean = false;
   displayedColumns: string[] = ['verified', 'uid', 'email', 'actions'];
-  userResponse?: UserResponse;
+  users: Array<User> = [];
+  private _userResponse?: UserResponse;
 
+  get userResponse(): UserResponse | undefined {
+      return this._userResponse;
+  }
+  
+  private set userResponse(value: UserResponse | undefined) {
+      this._userResponse = value;
+      this.users = value?.data ?? [];
+  }
+  
   constructor(
     private route: ActivatedRoute,
     private api: ApiService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private logger: LoggerService
   ) { }
 
   ngOnInit(): void {
@@ -59,8 +71,9 @@ export class UsersComponent implements OnInit {
     })
   }
 
-  beforePage(): void {
-    this.loadPageData(this.userResponse?.before);
+  filterCall(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const filterUsers = this.userResponse?.data.filter(e => e.email.includes(input.value) || e.uid.includes(input.value));
+    this.users = filterUsers ?? [];
   }
-
 }

@@ -11,7 +11,6 @@ interface User {
 interface UserResponse {
     data: Array<User>
     next?: string
-    before?: string
 }
 
 export { User, UserResponse }

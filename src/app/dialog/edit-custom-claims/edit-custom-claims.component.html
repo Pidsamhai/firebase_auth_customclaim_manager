@@ -13,5 +13,5 @@
 <div mat-dialog-actions align="end">
     <button mat-flat-button [disabled]="isLoading" (click)="formatJson()">Format</button>
     <button mat-flat-button mat-dialog-close>Cancel</button>
-    <button mat-flat-button [disabled]="customClaimsFormControl.errors || isLoading">Save</button>
+    <button mat-flat-button (click)="saveChange()" [disabled]="customClaimsFormControl.errors || isLoading">Save</button>
 </div>
